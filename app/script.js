@@ -62,14 +62,27 @@ export async function cadastroMotorista({ nome, sobrenome, email, celular, senha
   await cadastrarUsuario({ nome, sobrenome, email, celular, senha, cnh, router }, true);
 }
 
+async function validarCamposLogin({ email, senha }) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const senhaRegex = /^(?=.*[A-Z])(?=.*\d).+$/;
+
+  if (!email?.trim() || !senha?.trim()) {
+    throw new Error('Por favor, preencha todos os campos.');
+  }
+
+  if (!emailRegex.test(email)) throw new Error('Por favor, insira um e-mail válido.');
+  if (!senhaRegex.test(senha)) throw new Error('Senha deve conter pelo menos 1 letra maiúscula e 1 número.');
+}
+
 export async function login({ email, senha, router }) {
   try {
-    await validarCampos({ email, senha });
+    await validarCamposLogin({ email, senha });
 
+    const BASE_URL = 'http://192.168.0.18:3000';
     const response = await fetch(`${BASE_URL}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, senha })
+      body: JSON.stringify({ email, senha }),
     });
 
     const data = await response.json();
