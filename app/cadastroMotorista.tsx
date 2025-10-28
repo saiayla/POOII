@@ -30,7 +30,7 @@ export default function motorista() {
                     </View>
                     <View style={{ gap: 5, width: '80%' }}>
                         <Text>Celular</Text>
-                        <TextInput value={num_telefone} onChangeText={setNum_telefone} secureTextEntry style={styles.input} />
+                        <TextInput value={num_telefone} onChangeText={setNum_telefone} keyboardType="phone-pad" style={styles.input} />
                     </View>
                     <View style={{ gap: 5, width: '80%' }}>
                         <Text>Endereço</Text>
@@ -38,7 +38,7 @@ export default function motorista() {
                     </View>
                     <View style={{ gap: 5, width: '80%' }}>
                         <Text>CNH</Text>
-                        <TextInput value={cnh} onChangeText={setCnh} secureTextEntry style={styles.input} />
+                        <TextInput value={cnh} onChangeText={setCnh}  style={styles.input} />
                     </View>
                     <View style={{ gap: 5, width: '80%' }}>
                         <Text>Senha</Text>
