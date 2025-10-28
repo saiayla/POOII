@@ -1,7 +1,7 @@
 import { Alert, Platform } from 'react-native';
-const BASE_URL = 'http://192.168.0.18:3000';
+const BASE_URL = 'http://localhost:3000';
 
-async function validarCampos({ nome, sobrenome, email, celular, senha, cnh, motorista = false }) {
+async function validarCampos({ nome, email, num_telefone, endereco, senha, cnh, motorista = false }) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const senhaRegex = /^(?=.*[A-Z])(?=.*\d).+$/;
   const celularRegex = /^\d{10,11}$/;
@@ -9,11 +9,11 @@ async function validarCampos({ nome, sobrenome, email, celular, senha, cnh, moto
 
   if (
     !nome?.trim() ||
-    !sobrenome?.trim() ||
     !email?.trim() ||
-    !celular?.trim() ||
-    !senha?.trim() ||
-    (motorista && !cnh?.trim())
+    !num_telefone?.trim() ||
+    !endereco?.trim() ||
+    (motorista && !cnh?.trim()) ||
+    !senha?.trim() 
   ) {
     throw new Error('Por favor, preencha todos os campos.');
   }
@@ -27,12 +27,25 @@ async function validarCampos({ nome, sobrenome, email, celular, senha, cnh, moto
 async function cadastrarUsuario(dados, motorista = false) {
   const { router } = dados;
   try {
-    await validarCampos({ ...dados, motorista });
+    // Validação básica
+    await validarCampos(dados);
 
-    const response = await fetch(`${BASE_URL}/cadastrar`, {
+    // Endpoint
+    const endpoint = motorista ? '/users/motorista' : '/users/passageiro';
+
+    // Corpo da requisição
+    const body = {
+      nome: dados.nome,
+      email: dados.email,
+      num_telefone: dados.num_telefone,
+      endereco: dados.endereco,
+      senha: dados.senha,
+    };
+
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(dados),
+      body: JSON.stringify(body),
     });
 
     const data = await response.json();
@@ -46,6 +59,7 @@ async function cadastrarUsuario(dados, motorista = false) {
       router.push('./login');
     }
   } catch (error) {
+    console.log('Erro no cadastro:', error);
     if (Platform.OS === 'web') {
       alert(error.message || 'Erro inesperado.');
     } else {
@@ -54,12 +68,12 @@ async function cadastrarUsuario(dados, motorista = false) {
   }
 }
 
-export async function cadastroPassageiro({ nome, sobrenome, email, celular, senha, router }) {
-  await cadastrarUsuario({ nome, sobrenome, email, celular, senha, router });
+export async function cadastroPassageiro({ nome, email, num_telefone, endereco, senha, router }) {
+  await cadastrarUsuario({ nome, email, num_telefone, endereco, senha, router });
 }
 
-export async function cadastroMotorista({ nome, sobrenome, email, celular, senha, cnh, router }) {
-  await cadastrarUsuario({ nome, sobrenome, email, celular, senha, cnh, router }, true);
+export async function cadastroMotorista({ nome, email, num_telefone, endereco, senha, cnh, router }) {
+  await cadastrarUsuario({ nome, email, num_telefone, endereco, senha, cnh, router }, true);
 }
 
 async function validarCamposLogin({ email, senha }) {
@@ -78,7 +92,7 @@ export async function login({ email, senha, router }) {
   try {
     await validarCamposLogin({ email, senha });
 
-    const BASE_URL = 'http://192.168.0.18:3000';
+    const BASE_URL = 'http://localhost:3000';
     const response = await fetch(`${BASE_URL}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
