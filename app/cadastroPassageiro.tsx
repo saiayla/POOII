@@ -28,7 +28,7 @@ export default function passageiro() {
                         <TextInput value={email} onChangeText={setEmail} style={styles.input} />
                     </View>
                     <View style={{ gap: 5, width: '80%' }}>
-                        <Text>celular</Text>
+                        <Text>Celular</Text>
                         <TextInput value={num_telefone} onChangeText={setNum_telefone} style={styles.input}  keyboardType="phone-pad" />
                     </View>
                     <View style={{ gap: 5, width: '80%' }}>

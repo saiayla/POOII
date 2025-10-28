@@ -20,7 +20,7 @@ async function validarCampos({ nome, email, num_telefone, endereco, senha, cnh, 
 
   if (!emailRegex.test(email)) throw new Error('Por favor, insira um e-mail válido.');
   if (!senhaRegex.test(senha)) throw new Error('Senha deve conter pelo menos 1 letra maiúscula e 1 número.');
-  if (!celularRegex.test(celular)) throw new Error('Insira um número válido (com DDD).');
+  if (!num_telefoneRegex.test(num_telefone)) throw new Error('Insira um número válido (com DDD).');
   if (motorista && !cnhRegex.test(cnh)) throw new Error('CNH inválida. Deve conter 11 dígitos numéricos.');
 }
 
