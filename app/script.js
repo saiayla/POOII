@@ -4,7 +4,7 @@ const BASE_URL = 'http://localhost:3000';
 async function validarCampos({ nome, email, num_telefone, endereco, senha, cnh, motorista = false }) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const senhaRegex = /^(?=.*[A-Z])(?=.*\d).+$/;
-  const celularRegex = /^\d{10,11}$/;
+  const num_telefoneRegex = /^\d{10,11}$/;
   const cnhRegex = /^\d{11}$/;
 
   if (
