@@ -5,7 +5,7 @@ import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { cadastroMotorista } from './script.js';
 import { globalStyles as styles } from './style';
 
-export default function motorista() {
+export default function Motorista() {
     const router = useRouter();
 
     const [email, setEmail] = useState('');
